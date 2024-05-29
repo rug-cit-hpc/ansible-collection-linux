@@ -24,7 +24,7 @@
       - ^vfio-pci\.ids=
       - ^iommu=
     kernel_cmdline:  # noqa: var-naming[no-role-prefix]
-      - intel_iommu=on
-      - "{{ ['vfio-pci.ids=' + iommu_vfio_pci_ids] if iommu_vfio_pci_ids is defined else [] }}"
-      - iommu=pt
+      - "intel_iommu=on"
+      - "vfio-pci.ids=10de:2330"
+      - "iommu=pt"
   when: ansible_facts.processor | select('search', 'Intel') | list | length > 0
