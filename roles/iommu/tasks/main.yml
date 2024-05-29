@@ -1,19 +1,4 @@
 ---
-- name: Template dracut config for vfio
-  ansible.builtin.blockinfile:
-    path: /etc/dracut.conf.d/gpu-vfio.conf
-    block: |
-      add_drivers+="vfio vfio_iommu_type1 vfio_pci vfio_virqfd"
-    owner: root
-    group: root
-    mode: "0660"
-    create: true
-  become: true
-  when: iommu_vfio_pci_ids is defined
-  notify:
-    - Regenerate initramfs
-    - reboot
-
 - name: Add vfio to modules-load.d
   ansible.builtin.blockinfile:
     path: /etc/modules-load.d/vfio.conf
