@@ -22,8 +22,13 @@
   # slightly less pure but more reliable way of fetching that line.
   ansible.builtin.shell:
     cmd: >-
-      grep -E '^GRUB_CMDLINE_LINUX_DEFAULT' /etc/default/grub | tail -1
+      set -o pipefail
+      && grep -E '^GRUB_CMDLINE_LINUX_DEFAULT' /etc/default/grub | tail -1
+    args:
+      executable: /usr/bin/bash
   register: grub_cmdline_linux_default
+  changed_when: grub_cmdline_linux_default.rc != 0
+
 - name: Set fact containing the contents of GRUB_CMDLINE_LINUX_DEFAULT
   ansible.builtin.set_fact:
     grub_cmdline_linux_default: >-
@@ -36,7 +41,7 @@
   # We use a regex here so you can remove parameters regardless of their value, e.g to remove iommu=on you
   # could use the regex: ^iommu=
   ansible.builtin.set_fact:
-    grub_cmdline_linux_remove: "{{ grub_cmdline_linux_default.split() | select('search', kernel_cmdline_remove_regex) | list }}"
+    wrub_cmdline_linux_remove: "{{ grub_cmdline_linux_default.split() | select('search', kernel_cmdline_remove_regex) | list }}"
 
 - name: Display parameters to be removed
   ansible.builtin.debug:
