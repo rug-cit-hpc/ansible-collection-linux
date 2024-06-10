@@ -41,7 +41,7 @@
   # We use a regex here so you can remove parameters regardless of their value, e.g to remove iommu=on you
   # could use the regex: ^iommu=
   ansible.builtin.set_fact:
-    wrub_cmdline_linux_remove: "{{ grub_cmdline_linux_default.split() | select('search', kernel_cmdline_remove_regex) | list }}"
+    grub_cmdline_linux_remove: "{{ grub_cmdline_linux_default.split() | select('search', kernel_cmdline_remove_regex) | list }}"
 
 - name: Display parameters to be removed
   ansible.builtin.debug:
