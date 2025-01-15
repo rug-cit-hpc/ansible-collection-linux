@@ -24,9 +24,9 @@
     cmd: >-
       set -o pipefail
       && grep -E '^GRUB_CMDLINE_LINUX_DEFAULT' /etc/default/grub | tail -1
-    args:
-      executable: /usr/bin/bash
+    executable: /usr/bin/bash
   register: grub_cmdline_linux_default
+  changed_when: grub_cmdline_linux_default.rc != 0
 
 - name: Set fact containing the contents of GRUB_CMDLINE_LINUX_DEFAULT
   ansible.builtin.set_fact:
